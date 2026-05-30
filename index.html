@@ -266,15 +266,22 @@
       inset: 0;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       text-align: center;
-      padding: 1.5rem 1rem;
+      padding: 1.5rem 1rem 2rem;
       background: #ede8f5;
       z-index: 300;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
     }
 
     .inner-page.open {
       display: flex;
+    }
+
+    .inner-page .inner-title {
+      flex-shrink: 0;
+      padding-top: 0.5rem;
     }
 
     .inner-title {
@@ -284,58 +291,65 @@
       margin-bottom: 1.2rem;
     }
 
-    /* polaroids */
+    /* polaroids — grid 2 columns */
     .polaroids {
-      display: flex;
-      gap: clamp(0.5rem, 2.5vw, 1rem);
-      justify-content: center;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(0.7rem, 3vw, 1.1rem);
+      width: 100%;
+      max-width: 400px;
       margin-bottom: 1.2rem;
+    }
+
+    /* รูปที่ 1 กว้างเต็ม row */
+    .polaroid:nth-child(1) {
+      grid-column: 1 / -1;
+      transform: rotate(-1.5deg);
+      animation-delay: 0s;
+    }
+
+    .polaroid:nth-child(2) {
+      transform: rotate(-2deg);
+      animation-delay: 0.12s;
+    }
+
+    .polaroid:nth-child(3) {
+      transform: rotate(2deg);
+      animation-delay: 0.24s;
     }
 
     .polaroid {
       background: white;
-      border-radius: 6px;
-      padding: 6px 6px 22px;
-      box-shadow: 0 4px 16px rgba(91, 33, 182, 0.1);
-      width: min(100px, 26vw);
+      border-radius: 8px;
+      padding: 8px 8px 28px;
+      box-shadow: 0 4px 18px rgba(91, 33, 182, 0.12);
       animation: polaDrift 0.5s cubic-bezier(.34, 1.56, .64, 1) both;
+      transition: transform 0.2s;
     }
+
+    .polaroid:active { transform: scale(0.97) rotate(0deg) !important; }
 
     .polaroid img {
       width: 100%;
       aspect-ratio: 1;
       object-fit: cover;
       display: block;
-      border-radius: 3px;
+      border-radius: 5px;
       background: #e0d4f7;
-      min-height: 0;
     }
 
-    .polaroid:nth-child(1) {
-      transform: rotate(-5deg);
-      animation-delay: 0s;
-    }
-
-    .polaroid:nth-child(2) {
-      transform: rotate(1.5deg);
-      margin-top: -6px;
-      animation-delay: 0.1s;
-    }
-
-    .polaroid:nth-child(3) {
-      transform: rotate(4deg);
-      animation-delay: 0.2s;
+    /* caption ใต้ polaroid */
+    .polaroid .pcap {
+      font-size: 0.68rem;
+      color: #9d7dce;
+      margin-top: 4px;
+      font-weight: 600;
+      text-align: center;
     }
 
     @keyframes polaDrift {
-      0% {
-        opacity: 0;
-        transform: translateY(30px) rotate(0deg);
-      }
-
-      100% {
-        opacity: 1;
-      }
+      0%   { opacity: 0; transform: translateY(24px) scale(0.94); }
+      100% { opacity: 1; }
     }
 
     .polaroid svg {
@@ -349,17 +363,35 @@
     .letter-card {
       background: white;
       border-radius: 20px;
-      padding: 1.5rem 1.6rem;
-      max-width: 360px;
+      padding: 1.6rem 1.8rem 1.8rem;
+      max-width: min(420px, 92vw);
       width: 100%;
       box-shadow: 0 4px 20px rgba(91, 33, 182, 0.1);
       text-align: left;
-      font-size: clamp(0.82rem, 2.8vw, 0.95rem);
+      font-size: clamp(0.88rem, 3.5vw, 1rem);
       color: #5b21b6;
-      line-height: 1.8;
-      max-height: 48vh;
-      overflow-y: auto;
+      line-height: 1.9;
       animation: cardUp 0.5s cubic-bezier(.34, 1.56, .64, 1) both;
+      flex-shrink: 0;
+      word-break: break-word;
+    }
+
+    /* typewriter cursor */
+    .tw-cursor {
+      display: inline-block;
+      width: 2px; height: 1em;
+      background: #a78bfa;
+      margin-left: 2px;
+      vertical-align: text-bottom;
+      animation: blink 0.7s step-end infinite;
+    }
+    @keyframes blink {
+      0%,100% { opacity: 1; } 50% { opacity: 0; }
+    }
+
+    #letter-body p {
+      margin-bottom: 0.75rem;
+      min-height: 1.2em;
     }
 
     @keyframes cardUp {
@@ -435,10 +467,145 @@
     #gift3-msg li::before {
       content: '💜 ';
     }
+
+    /* ── SPLASH SCREEN ── */
+    #splash {
+      position: fixed; inset: 0; z-index: 1000;
+      background: #ede8f5;
+      display: flex; align-items: center; justify-content: center;
+      padding: 1.5rem;
+      transition: opacity 0.7s ease;
+    }
+    #splash.fade-out { opacity: 0; pointer-events: none; }
+
+    .splash-card {
+      background: white;
+      border-radius: 28px;
+      padding: 2rem 1.8rem 2.2rem;
+      max-width: 380px; width: 100%;
+      box-shadow: 0 8px 40px rgba(139,92,246,0.18);
+      display: flex; flex-direction: column; align-items: center;
+      gap: 0;
+    }
+
+    .splash-gif {
+      width: min(160px, 44vw);
+      height: auto;
+      margin-bottom: 1.1rem;
+      animation: floatBob 2.5s ease-in-out infinite;
+    }
+    @keyframes floatBob {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-10px); }
+    }
+
+    .splash-title {
+      font-size: clamp(1.15rem, 4.5vw, 1.45rem);
+      font-weight: 800; color: #5b21b6;
+      margin-bottom: 0.6rem;
+      line-height: 1.35;
+    }
+
+    .splash-sub {
+      font-size: clamp(0.78rem, 3vw, 0.88rem);
+      color: #9d7dce; font-weight: 400;
+      line-height: 1.65; margin-bottom: 1.4rem;
+      text-align: center;
+    }
+
+    /* loading dots */
+    .loading-dots {
+      display: flex; gap: 6px; margin-bottom: 1.4rem;
+    }
+    .loading-dots span {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #c4b5fd;
+      animation: dotPop 1.2s ease-in-out infinite;
+    }
+    .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes dotPop {
+      0%,100% { transform: scale(1); background: #c4b5fd; }
+      50%      { transform: scale(1.5); background: #a78bfa; }
+    }
+
+    /* fingerprint button */
+    #fp-btn {
+      display: none;
+      flex-direction: column; align-items: center; gap: 0.5rem;
+      cursor: pointer; border: none; background: none;
+      animation: fadeUp 0.6s cubic-bezier(.34,1.56,.64,1) both;
+    }
+    #fp-btn.show { display: flex; }
+
+    .fp-ring {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ede8f5, #d4b4fe);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 16px rgba(167,139,250,0.4);
+      transition: transform 0.15s, box-shadow 0.15s;
+      font-size: 2rem;
+      animation: fpPulse 2s ease-in-out infinite;
+    }
+    #fp-btn:active .fp-ring {
+      transform: scale(0.9);
+      box-shadow: 0 2px 8px rgba(167,139,250,0.3);
+    }
+    @keyframes fpPulse {
+      0%,100% { box-shadow: 0 4px 16px rgba(167,139,250,0.4); }
+      50%      { box-shadow: 0 4px 28px rgba(167,139,250,0.8), 0 0 0 8px rgba(167,139,250,0.12); }
+    }
+
+    .fp-label {
+      font-size: 0.75rem; color: #9d7dce; font-weight: 600;
+    }
+
+    /* hearts decoration */
+    .splash-hearts {
+      position: absolute;
+      pointer-events: none; font-size: 1rem;
+      animation: heartFloat 3s ease-in-out infinite;
+      opacity: 0.7;
+    }
+    @keyframes heartFloat {
+      0%,100% { transform: translateY(0) rotate(-10deg); opacity:0.7; }
+      50%      { transform: translateY(-14px) rotate(10deg); opacity:1; }
+    }
   </style>
 </head>
 
 <body>
+
+  <!-- ═══ SPLASH ═══ -->
+  <div id="splash">
+    <div class="splash-card" style="position:relative">
+      <!-- หัวใจลอย -->
+      <span class="splash-hearts" style="top:12px;right:22px;animation-delay:0s">💜</span>
+      <span class="splash-hearts" style="top:30px;left:18px;animation-delay:0.8s;font-size:.8rem">🤍</span>
+      <span class="splash-hearts" style="bottom:60px;right:16px;animation-delay:1.4s;font-size:.75rem">💕</span>
+
+      <!-- 🐱 เปลี่ยน GIF ตัวละครได้เลย — ใส่ Kuromi หรืออะไรก็ได้ -->
+      <img class="splash-gif"
+        src="default-ask.gif"
+        onerror="this.src='https://cataas.com/cat/gif'"
+        alt="character">
+
+      <p class="splash-title">มีเรื่องสำคัญอยากถาม... 🥺</p>
+      <p class="splash-sub" id="splash-sub-text">กำลังเตรียมอะไรบางอย่าง<br>เพื่อน้องอยู่เลยนะ...</p>
+
+      <!-- loading dots (หายหลังโหลดเสร็จ) -->
+      <div class="loading-dots" id="splash-dots">
+        <span></span><span></span><span></span>
+      </div>
+
+      <!-- fingerprint (โผล่หลังโหลดเสร็จ) -->
+      <button id="fp-btn" onclick="enterMain()">
+        <div class="fp-ring">🫰</div>
+        <span class="fp-label">แตะเพื่อเปิดดู</span>
+      </button>
+    </div>
+  </div>
 
   <!-- ═══ MUSIC ═══ -->
   <audio id="bg-music" loop>
@@ -452,7 +619,7 @@
     <div class="cat-frame">
       <img id="cat-question" src="cat.gif" alt="🐱">
     </div>
-    <p class="q-text">น้องจะเป็นแฟนพี่มั้ย? 🥺</p>
+    <p class="q-text">เป็นแฟนกับพี่มั้ย? 🥺</p>
     <div class="btn-row">
       <button id="btn-yes" onclick="sayYes()">ใช่!! 💕</button>
       <button id="btn-no" onclick="pressNo()">ไม่... 😢</button>
@@ -488,29 +655,33 @@
     <p class="inner-title">💜 ความทรงจำของเรา</p>
     <div class="polaroids">
 
-      <!-- ✏️ รูปที่ 1 — เปลี่ยน src เป็น path รูปของตัวเองได้เลย เช่น "photo1.jpg" -->
+      <!-- ✏️ รูปที่ 1 (กว้างเต็ม) — เปลี่ยน src และ caption ได้เลย -->
       <div class="polaroid">
         <img src="1.jpg" alt="ความทรงจำ 1"
-          onerror="this.style.background='#e0d4f7';this.style.minHeight='110px';this.removeAttribute('src')">
+          onerror="this.style.background='#e0d4f7';this.removeAttribute('src')">
+        <p class="pcap">✨ น่ารักเนอะ</p>
       </div>
 
-      <!-- ✏️ รูปที่ 2 — เปลี่ยน src เป็น path รูปของตัวเองได้เลย เช่น "photo2.jpg" -->
+      <!-- ✏️ รูปที่ 2 -->
       <div class="polaroid">
         <img src="2.jpg" alt="ความทรงจำ 2"
-          onerror="this.style.background='#e0d4f7';this.style.minHeight='110px';this.removeAttribute('src')">
+          onerror="this.style.background='#e0d4f7';this.removeAttribute('src')">
+        <p class="pcap">💜 กว่าจะได้สักรูป</p>
       </div>
 
-      <!-- ✏️ รูปที่ 3 — เปลี่ยน src เป็น path รูปของตัวเองได้เลย เช่น "photo3.jpg" -->
+      <!-- ✏️ รูปที่ 3 -->
       <div class="polaroid">
         <img src="3.jpg" alt="ความทรงจำ 3"
-          onerror="this.style.background='#e0d4f7';this.style.minHeight='110px';this.removeAttribute('src')">
+          onerror="this.style.background='#e0d4f7';this.removeAttribute('src')">
+        <p class="pcap">555555</p>
       </div>
+
     </div>
-    <button class="btn-back" onclick="closeInner('inner-memory')">← กลับ</button>
+    <button class="btn-back" style="flex-shrink:0" onclick="closeInner('inner-memory')">← กลับ</button>
   </div>
 
   <!-- ═══ INNER: LETTER ═══ -->
-  <div class="inner-page" id="inner-letter">
+  <!-- <div class="inner-page" id="inner-letter">
     <p class="inner-title">💌 จดหมายถึงน้อง</p>
     <div class="letter-card">
       <span class="lheart">💜</span>
@@ -524,27 +695,16 @@
       <p class="sign">— พี่ รักน้องนะ 💜</p>
     </div>
     <button class="btn-back" onclick="closeInner('inner-letter')">← กลับ</button>
-  </div>
+  </div> -->
 
   <!-- ═══ INNER: GIFT 3 — จดหมาย ═══ -->
   <div class="inner-page" id="inner-gift3">
     <p class="inner-title">💌 จดหมายถึงน้องปราย</p>
     <div class="letter-card">
       <span class="lheart">💜</span>
-      <p>พี่ไม่ค่อยเก่งพูดออกไปตรงๆ เลย —<br>เลยเขียนแทนแล้วกัน</p>
-      <p>น้องคือเหตุผลที่พี่ยิ้มโดยไม่รู้ตัว<br>
-        ทำไมเพลงบางเพลงถึงโดนใจพี่จนสุด<br>
-        และทำไมวันธรรมดาๆ ถึงรู้สึกพิเศษขึ้นมา</p>
-      <p>พี่ชอบน้องในแบบที่ยังหาคำพูดไม่เจอ<br>
-        ชอบตอนที่น้องยิ้ม ชอบตอนที่ทำตัวตลกๆ<br>
-        ชอบแม้กระทั่งตอนที่น้องดีดๆ</p>
-      <p>อยู่ด้วยกันแล้วเวลาผ่านเร็วมาก<br>
-        พี่อยากให้มันผ่านช้าลง</p>
-      <p>พี่คิดถึงน้องเยอะมากนะ<br>
-        มากกว่าที่น้องคิดแน่นอน 🥹</p>
-      <p class="sign">— พี่ รักน้องนะ 💜</p>
+      <div id="letter-body"></div>
     </div>
-    <button class="btn-back" onclick="closeInner('inner-gift3')">← กลับ</button>
+    <button class="btn-back" style="margin-top:1.2rem;flex-shrink:0" onclick="closeInner('inner-gift3')">← กลับ</button>
   </div>
 
   <!-- ═══ YES OVERLAY ═══ -->
@@ -602,10 +762,18 @@
       if (musicPlaying) return;
       const audio = document.getElementById('bg-music');
       audio.volume = 0.35;
-      audio.play().catch(() => { });
-      musicPlaying = true;
-      document.getElementById('music-btn').textContent = '🔊';
+      audio.play().then(() => {
+        musicPlaying = true;
+        document.getElementById('music-btn').textContent = '🔊';
+      }).catch(() => { });
     }
+
+    // ลอง autoplay ทันทีตอนโหลดหน้า
+    window.addEventListener('load', () => { startMusic(); });
+
+    // fallback: เล่นทันทีที่ผู้ใช้แตะครั้งแรกที่ splash
+    document.addEventListener('touchstart', startMusic, { once: true });
+    document.addEventListener('pointerdown', startMusic, { once: true });
 
     function toggleMusic() {
       const audio = document.getElementById('bg-music');
@@ -639,6 +807,37 @@
         document.body.appendChild(el);
         setTimeout(() => el.remove(), 4500);
       }
+    }
+
+    // ── Splash ──
+    const SPLASH_MESSAGES = [
+      'กำลังเตรียมอะไรบางอย่าง<br>เพื่อน้องอยู่เลยนะ...',
+      'รอแป๊บนึงนะ กำลัง<br>จัดเรียงความรู้สึกอยู่ 🥺',
+      'เกือบพร้อมแล้ว...<br>อย่าเพิ่งไปไหนนะ 💜',
+    ];
+    let splashMsgIdx = 0;
+
+    (function initSplash() {
+      let i = 0;
+      const interval = setInterval(() => {
+        i++;
+        if (i < SPLASH_MESSAGES.length) {
+          document.getElementById('splash-sub-text').innerHTML = SPLASH_MESSAGES[i];
+        } else {
+          clearInterval(interval);
+          // show fingerprint
+          document.getElementById('splash-dots').style.display = 'none';
+          document.getElementById('splash-sub-text').innerHTML = 'ถ้าพร้อมแล้ว แตะตรงนี้ได้เลยนะ 💜';
+          document.getElementById('fp-btn').classList.add('show');
+        }
+      }, 1600);
+    })();
+
+    function enterMain() {
+      const splash = document.getElementById('splash');
+      splash.classList.add('fade-out');
+      startMusic();
+      setTimeout(() => { splash.style.display = 'none'; }, 700);
     }
 
     // ── Say yes ──
@@ -702,24 +901,92 @@
       setTimeout(() => {
         document.getElementById(GIFT_INNERS[n]).classList.add('open');
         spawnPetals(20);
+        if (n === 3) startTypewriter();
       }, 200);
     }
 
     function closeInner(id) {
       document.getElementById(id).classList.remove('open');
+      // reset typewriter so it plays again next open
+      if (id === 'inner-gift3') {
+        document.getElementById('letter-body').innerHTML = '';
+        twDone = false;
+      }
+    }
+
+    // ── Typewriter ──
+    const LETTER_LINES = [
+      'ตั้งแต่ที่คุยกันมา พี่มีความสุขมากๆเลยนะ',
+      'ชอบที่ได้เห็นน้องยิ้ม ชอบเวลาน้องกินของอร่อย',
+      'ชอบเวลาน้องซุ่มซ่าม ตอนที่น้องดีดๆก็ยังน่ารัก 5555',
+      '',
+      'พี่อยากเห็นและอยากอยู่กับน้องในทุกๆโมเม้นเลยนะ',
+      'อยากเป็นคนที่ไม่ใช่แค่ได้เห็นน้องมีความสุข',
+      'แต่อยากเป็นคนทำให้น้องมีความสุขเอง...',
+      '',
+      'เย้! น้องเป็นแฟนพี่แล้วนะะะ',
+      'พี่จะดูแลน้องให้ดีที่สุด จะทำให้น้องยิ้มเย้อๆเลยย',
+      '',
+      '— พี่ รักน้องนะ 💜',
+    ];
+
+    let twDone = false;
+
+    function startTypewriter() {
+      if (twDone) return;
+      twDone = true;
+      const body = document.getElementById('letter-body');
+      body.innerHTML = '';
+
+      let lineIdx = 0, charIdx = 0;
+      let currentP = null;
+      let cursor = null;
+
+      function nextChar() {
+        // start new paragraph
+        if (charIdx === 0) {
+          currentP = document.createElement('p');
+          if (lineIdx === LETTER_LINES.length - 1) currentP.className = 'sign';
+          body.appendChild(currentP);
+          cursor = document.createElement('span');
+          cursor.className = 'tw-cursor';
+          currentP.appendChild(cursor);
+        }
+
+        const line = LETTER_LINES[lineIdx];
+
+        if (line === '') {
+          // blank line = spacer, skip instantly
+          lineIdx++; charIdx = 0;
+          if (lineIdx < LETTER_LINES.length) setTimeout(nextChar, 80);
+          return;
+        }
+
+        if (charIdx < line.length) {
+          // insert char before cursor
+          cursor.insertAdjacentText('beforebegin', line[charIdx]);
+          charIdx++;
+          // scroll letter card down smoothly
+          body.closest('.letter-card').scrollTop = 9999;
+          setTimeout(nextChar, line[charIdx - 1] === ' ' ? 55 : 38);
+        } else {
+          // line done
+          lineIdx++; charIdx = 0;
+          if (lineIdx < LETTER_LINES.length) {
+            cursor.remove();
+            setTimeout(nextChar, 320);
+          } else {
+            cursor.remove();
+          }
+        }
+      }
+
+      setTimeout(nextChar, 400);
     }
 
     // ── Restart ──
     function restart() {
-      noCount = 0;
-      const yes = document.getElementById('btn-yes');
-      yes.style.fontSize = ''; yes.style.padding = '';
-      const btnNo = document.getElementById('btn-no');
-      btnNo.textContent = NO_TEXTS[0];
-      btnNo.style.display = '';
-      document.getElementById('cat-question').src = 'https://mayz.love/assets/do-you-luv-me/cat.gif';
-      document.querySelectorAll('.inner-page').forEach(p => p.classList.remove('open'));
-      showPage('page-main');
+      location.reload();
     }
   </script>
 </body>
