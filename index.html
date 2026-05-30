@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>💜</title>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      min-height: 100dvh;
+      background: #ede8f5;
+      font-family: 'Kanit', sans-serif;
+      overflow: hidden;
+      touch-action: manipulation;
+    }
+
+    /* ── PAGES ── */
+    .page {
+      position: fixed;
+      inset: 0;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 1.5rem 1.2rem;
+      gap: 0;
+    }
+
+    .page.active {
+      display: flex;
+    }
+
+    /* ── CAT FRAME ── */
+    .cat-frame {
+      width: min(280px, 74vw);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 6px 28px rgba(91, 33, 182, 0.13);
+      background: #d5c8ed;
+      flex-shrink: 0;
+      margin-bottom: 1.3rem;
+    }
+
+    .cat-frame img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* ── MUSIC BUTTON ── */
+    #music-btn {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      z-index: 500;
+      background: rgba(255, 255, 255, 0.7);
+      border: 1.5px solid #c4b5fd;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 2px 10px rgba(139, 92, 246, 0.2);
+      transition: transform 0.2s;
+    }
+
+    #music-btn:active {
+      transform: scale(0.9);
+    }
+
+    /* ── QUESTION TEXT ── */
+    .q-text {
+      font-size: clamp(1.3rem, 5.5vw, 1.85rem);
+      font-weight: 700;
+      color: #5b21b6;
+      margin-bottom: 1.5rem;
+      line-height: 1.35;
+    }
+
+    /* ── BUTTONS ── */
+    .btn-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+
+    #btn-yes {
+      background: #a78bfa;
+      color: white;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      font-family: 'Kanit', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      padding: 0.85rem 2.4rem;
+      box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
+      transition: font-size 0.4s cubic-bezier(.34, 1.56, .64, 1),
+        padding 0.4s cubic-bezier(.34, 1.56, .64, 1),
+        box-shadow 0.3s;
+      white-space: nowrap;
+      position: relative;
+      z-index: 1;
+    }
+
+    #btn-yes:active {
+      transform: scale(0.96);
+    }
+
+    #btn-no {
+      background: #faf5eb;
+      color: #a0956b;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      font-family: 'Kanit', sans-serif;
+      font-weight: 600;
+      font-size: 0.9rem;
+      padding: 0.75rem 1.8rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+      transition: font-size 0.3s, padding 0.3s;
+      white-space: nowrap;
+    }
+
+    /* ── PETAL CONFETTI ── */
+    .petal {
+      position: fixed;
+      pointer-events: none;
+      z-index: 50;
+      border-radius: 50% 0 50% 0;
+      animation: petalFall linear forwards;
+    }
+
+    @keyframes petalFall {
+      0% {
+        transform: translateY(-20px) rotate(0deg) scale(1);
+        opacity: 1;
+      }
+
+      80% {
+        opacity: 0.8;
+      }
+
+      100% {
+        transform: translateY(105vh) rotate(520deg) scale(0.6);
+        opacity: 0;
+      }
+    }
+
+    /* ── YES OVERLAY ── */
+    #yes-overlay {
+      position: fixed;
+      border-radius: 50px;
+      background: #a78bfa;
+      color: white;
+      font-family: 'Kanit', sans-serif;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      z-index: 200;
+      will-change: transform, border-radius;
+    }
+
+    /* ── SUCCESS PAGE ── */
+    #page-success .big-title {
+      font-size: clamp(1.45rem, 5.5vw, 2rem);
+      font-weight: 800;
+      color: #5b21b6;
+      margin-bottom: 1.1rem;
+    }
+
+    .gifts-row {
+      display: flex;
+      gap: clamp(1rem, 5vw, 2rem);
+      margin: 0.6rem 0 0.3rem;
+      justify-content: center;
+    }
+
+    .gift-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      transition: transform 0.2s;
+      animation: giftBounce 1.6s ease-in-out infinite;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+
+    .gift-box:nth-child(2) {
+      animation-delay: 0.22s;
+    }
+
+    .gift-box:nth-child(3) {
+      animation-delay: 0.44s;
+    }
+
+    .gift-box:active {
+      transform: scale(0.88) !important;
+    }
+
+    .gift-icon {
+      font-size: clamp(2.2rem, 8vw, 3rem);
+    }
+
+    .gift-label {
+      font-size: 0.68rem;
+      color: #7c3aed;
+      margin-top: 0.2rem;
+      font-weight: 600;
+    }
+
+    @keyframes giftBounce {
+
+      0%,
+      100% {
+        transform: translateY(0) rotate(-3deg);
+      }
+
+      50% {
+        transform: translateY(-10px) rotate(3deg);
+      }
+    }
+
+    .gift-hint {
+      font-size: 0.82rem;
+      color: #9d7dce;
+    }
+
+    .btn-restart {
+      margin-top: 0.8rem;
+      background: transparent;
+      color: #9d7dce;
+      border: 1.5px solid #c4aef0;
+      border-radius: 50px;
+      cursor: pointer;
+      font-family: 'Kanit', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 0.45rem 1.4rem;
+    }
+
+    /* ── INNER PAGES (memory / letter) ── */
+    .inner-page {
+      display: none;
+      position: fixed;
+      inset: 0;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 1.5rem 1rem;
+      background: #ede8f5;
+      z-index: 300;
+    }
+
+    .inner-page.open {
+      display: flex;
+    }
+
+    .inner-title {
+      font-size: clamp(1.25rem, 4.5vw, 1.6rem);
+      font-weight: 700;
+      color: #5b21b6;
+      margin-bottom: 1.2rem;
+    }
+
+    /* polaroids */
+    .polaroids {
+      display: flex;
+      gap: clamp(0.5rem, 2.5vw, 1rem);
+      justify-content: center;
+      margin-bottom: 1.2rem;
+    }
+
+    .polaroid {
+      background: white;
+      border-radius: 6px;
+      padding: 6px 6px 22px;
+      box-shadow: 0 4px 16px rgba(91, 33, 182, 0.1);
+      width: min(100px, 26vw);
+      animation: polaDrift 0.5s cubic-bezier(.34, 1.56, .64, 1) both;
+    }
+
+    .polaroid img {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      display: block;
+      border-radius: 3px;
+      background: #e0d4f7;
+      min-height: 0;
+    }
+
+    .polaroid:nth-child(1) {
+      transform: rotate(-5deg);
+      animation-delay: 0s;
+    }
+
+    .polaroid:nth-child(2) {
+      transform: rotate(1.5deg);
+      margin-top: -6px;
+      animation-delay: 0.1s;
+    }
+
+    .polaroid:nth-child(3) {
+      transform: rotate(4deg);
+      animation-delay: 0.2s;
+    }
+
+    @keyframes polaDrift {
+      0% {
+        opacity: 0;
+        transform: translateY(30px) rotate(0deg);
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+
+    .polaroid svg {
+      width: 100%;
+      aspect-ratio: 1;
+      display: block;
+      border-radius: 3px;
+    }
+
+    /* letter */
+    .letter-card {
+      background: white;
+      border-radius: 20px;
+      padding: 1.5rem 1.6rem;
+      max-width: 360px;
+      width: 100%;
+      box-shadow: 0 4px 20px rgba(91, 33, 182, 0.1);
+      text-align: left;
+      font-size: clamp(0.82rem, 2.8vw, 0.95rem);
+      color: #5b21b6;
+      line-height: 1.8;
+      max-height: 48vh;
+      overflow-y: auto;
+      animation: cardUp 0.5s cubic-bezier(.34, 1.56, .64, 1) both;
+    }
+
+    @keyframes cardUp {
+      0% {
+        opacity: 0;
+        transform: translateY(24px) scale(0.96);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .letter-card .lheart {
+      font-size: 1.6rem;
+      display: block;
+      text-align: center;
+      margin-bottom: 0.9rem;
+    }
+
+    .letter-card p {
+      margin-bottom: 0.6rem;
+    }
+
+    .letter-card .sign {
+      font-weight: 700;
+      margin-top: 0.8rem;
+    }
+
+    .btn-back {
+      margin-top: 1rem;
+      background: #e0d4f7;
+      color: #7c3aed;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      font-family: 'Kanit', sans-serif;
+      font-weight: 600;
+      font-size: 0.88rem;
+      padding: 0.6rem 1.8rem;
+    }
+
+    /* gift-3 special message */
+    #gift3-msg {
+      background: white;
+      border-radius: 20px;
+      padding: 1.6rem 2rem;
+      max-width: 340px;
+      width: 100%;
+      box-shadow: 0 4px 20px rgba(91, 33, 182, 0.1);
+      animation: cardUp 0.5s cubic-bezier(.34, 1.56, .64, 1) both;
+    }
+
+    #gift3-msg .g3-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #5b21b6;
+      margin-bottom: 0.8rem;
+    }
+
+    #gift3-msg ul {
+      list-style: none;
+      text-align: left;
+    }
+
+    #gift3-msg li {
+      color: #7c3aed;
+      font-size: 0.9rem;
+      padding: 0.25rem 0;
+    }
+
+    #gift3-msg li::before {
+      content: '💜 ';
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ═══ MUSIC ═══ -->
+  <audio id="bg-music" loop>
+    <!-- 🎵 เปลี่ยน URL เพลงได้เลย -->
+    <source src="https://mayz.love/assets/do-you-luv-me/bgm.mp3" type="audio/mpeg">
+  </audio>
+  <button id="music-btn" onclick="toggleMusic()" title="เปิด/ปิดเพลง">🎵</button>
+
+  <!-- ═══ PAGE: QUESTION ═══ -->
+  <div class="page active" id="page-main">
+    <div class="cat-frame">
+      <img id="cat-question" src="cat.gif" alt="🐱">
+    </div>
+    <p class="q-text">น้องจะเป็นแฟนพี่มั้ย? 🥺</p>
+    <div class="btn-row">
+      <button id="btn-yes" onclick="sayYes()">ใช่!! 💕</button>
+      <button id="btn-no" onclick="pressNo()">ไม่... 😢</button>
+    </div>
+  </div>
+
+  <!-- ═══ PAGE: SUCCESS ═══ -->
+  <div class="page" id="page-success">
+    <p class="big-title">พี่รู้อยู่แล้ว!! 💕💕💕</p>
+    <div class="cat-frame">
+      <img src="cat-shy.png" alt="🐱" onerror="this.onerror=null;this.src='https://placekitten.com/270/200'">
+    </div>
+    <div class="gifts-row">
+      <div class="gift-box" id="gift-1" onclick="openGift(1)">
+        <span class="gift-icon">🎁</span>
+        <span class="gift-label">ความทรงจำ</span>
+      </div>
+      <div class="gift-box" id="gift-2" onclick="openGift(2)">
+        <span class="gift-icon">🎁</span>
+        <span class="gift-label">เพลงของเรา</span>
+      </div>
+      <div class="gift-box" id="gift-3" onclick="openGift(3)">
+        <span class="gift-icon">🎁</span>
+        <span class="gift-label">จดหมาย</span>
+      </div>
+    </div>
+    <p class="gift-hint">แตะของขวัญเพื่อเปิด ✨</p>
+    <button class="btn-restart" onclick="restart()">เริ่มใหม่ ▾</button>
+  </div>
+
+  <!-- ═══ INNER: MEMORIES ═══ -->
+  <div class="inner-page" id="inner-memory">
+    <p class="inner-title">💜 ความทรงจำของเรา</p>
+    <div class="polaroids">
+
+      <!-- ✏️ รูปที่ 1 — เปลี่ยน src เป็น path รูปของตัวเองได้เลย เช่น "photo1.jpg" -->
+      <div class="polaroid">
+        <img src="1.jpg" alt="ความทรงจำ 1"
+          onerror="this.style.background='#e0d4f7';this.style.minHeight='110px';this.removeAttribute('src')">
+      </div>
+
+      <!-- ✏️ รูปที่ 2 — เปลี่ยน src เป็น path รูปของตัวเองได้เลย เช่น "photo2.jpg" -->
+      <div class="polaroid">
+        <img src="2.jpg" alt="ความทรงจำ 2"
+          onerror="this.style.background='#e0d4f7';this.style.minHeight='110px';this.removeAttribute('src')">
+      </div>
+
+      <!-- ✏️ รูปที่ 3 — เปลี่ยน src เป็น path รูปของตัวเองได้เลย เช่น "photo3.jpg" -->
+      <div class="polaroid">
+        <img src="3.jpg" alt="ความทรงจำ 3"
+          onerror="this.style.background='#e0d4f7';this.style.minHeight='110px';this.removeAttribute('src')">
+      </div>
+    </div>
+    <button class="btn-back" onclick="closeInner('inner-memory')">← กลับ</button>
+  </div>
+
+  <!-- ═══ INNER: LETTER ═══ -->
+  <div class="inner-page" id="inner-letter">
+    <p class="inner-title">💌 จดหมายถึงน้อง</p>
+    <div class="letter-card">
+      <span class="lheart">💜</span>
+      <p>พี่ไม่ค่อยเก่งพูดออกไปตรงๆ เลย —</p>
+      <p>เลยเขียนแทนแล้วกัน</p>
+      <p>น้องคือเหตุผลที่พี่ยิ้มโดยไม่รู้ตัว<br>
+        ทำไมเพลงบางเพลงถึงโดนใจพี่จนสุด<br>
+        และทำไมวันธรรมดาๆ ถึงรู้สึกพิเศษขึ้นมา</p>
+      <p>พี่ชอบน้องในแบบที่ยังหาคำพูดไม่เจอ</p>
+      <p>แต่พี่คิดว่า... พี่จะรู้สึกแบบนี้ไปนานมากเลย</p>
+      <p class="sign">— พี่ รักน้องนะ 💜</p>
+    </div>
+    <button class="btn-back" onclick="closeInner('inner-letter')">← กลับ</button>
+  </div>
+
+  <!-- ═══ INNER: GIFT 3 — จดหมาย ═══ -->
+  <div class="inner-page" id="inner-gift3">
+    <p class="inner-title">💌 จดหมายถึงน้องปราย</p>
+    <div class="letter-card">
+      <span class="lheart">💜</span>
+      <p>พี่ไม่ค่อยเก่งพูดออกไปตรงๆ เลย —<br>เลยเขียนแทนแล้วกัน</p>
+      <p>น้องคือเหตุผลที่พี่ยิ้มโดยไม่รู้ตัว<br>
+        ทำไมเพลงบางเพลงถึงโดนใจพี่จนสุด<br>
+        และทำไมวันธรรมดาๆ ถึงรู้สึกพิเศษขึ้นมา</p>
+      <p>พี่ชอบน้องในแบบที่ยังหาคำพูดไม่เจอ<br>
+        ชอบตอนที่น้องยิ้ม ชอบตอนที่ทำตัวตลกๆ<br>
+        ชอบแม้กระทั่งตอนที่น้องดีดๆ</p>
+      <p>อยู่ด้วยกันแล้วเวลาผ่านเร็วมาก<br>
+        พี่อยากให้มันผ่านช้าลง</p>
+      <p>พี่คิดถึงน้องเยอะมากนะ<br>
+        มากกว่าที่น้องคิดแน่นอน 🥹</p>
+      <p class="sign">— พี่ รักน้องนะ 💜</p>
+    </div>
+    <button class="btn-back" onclick="closeInner('inner-gift3')">← กลับ</button>
+  </div>
+
+  <!-- ═══ YES OVERLAY ═══ -->
+  <div id="yes-overlay" style="display:none"></div>
+
+  <script>
+    // ── No button stages ──
+    const NO_TEXTS = [
+      'ไม่... 😢',
+      'เดี๋ยวก่อน... แน่ใจมั้ย? 🥺',
+      'เอาดีๆๆๆ... 🥺',
+      'ม่ายยยย... 🥺',
+      'คิดดูก่อนได้มั้ย 🥺',
+      'น้องใจร้ายมากเลย 🫠',
+      'พี่รู้ว่าน้องรักพี่นิดนึง...',
+    ];
+
+    const YES_SIZES = [
+      { fs: '1.1rem', pad: '0.85rem 2.4rem' },
+      { fs: '1.3rem', pad: '0.9rem 2.8rem' },
+      { fs: '1.65rem', pad: '1rem 3.2rem' },
+      { fs: '2rem', pad: '1.1rem 3.6rem' },
+      { fs: '2.45rem', pad: '1.2rem 4rem' },
+      { fs: '3rem', pad: '1.35rem 4.5rem' },
+      { fs: '3.7rem', pad: '1.5rem 5rem' },
+    ];
+
+    let noCount = 0;
+
+    function pressNo() {
+      noCount = Math.min(noCount + 1, NO_TEXTS.length - 1);
+
+      const btnNo = document.getElementById('btn-no');
+      btnNo.textContent = NO_TEXTS[noCount];
+      if (noCount >= NO_TEXTS.length - 1) {
+        // กดอีกครั้งค่อยหาย
+        btnNo.onclick = () => { btnNo.style.display = 'none'; };
+      }
+
+      const s = YES_SIZES[noCount];
+      const yes = document.getElementById('btn-yes');
+      yes.style.fontSize = s.fs;
+      yes.style.padding = s.pad;
+
+      document.getElementById('cat-question').src = 'cat-sad.gif';
+
+      spawnPetals(14);
+      startMusic();
+    }
+
+    // ── Music ──
+    let musicPlaying = false;
+
+    function startMusic() {
+      if (musicPlaying) return;
+      const audio = document.getElementById('bg-music');
+      audio.volume = 0.35;
+      audio.play().catch(() => { });
+      musicPlaying = true;
+      document.getElementById('music-btn').textContent = '🔊';
+    }
+
+    function toggleMusic() {
+      const audio = document.getElementById('bg-music');
+      if (audio.paused) {
+        audio.play().catch(() => { });
+        musicPlaying = true;
+        document.getElementById('music-btn').textContent = '🔊';
+      } else {
+        audio.pause();
+        musicPlaying = false;
+        document.getElementById('music-btn').textContent = '🔇';
+      }
+    }
+
+    // ── Petal confetti ──
+    const PETAL_COLORS = ['#f9a8d4', '#e879f9', '#c4b5fd', '#fda4af', '#f0abfc', '#fbcfe8'];
+
+    function spawnPetals(n) {
+      for (let i = 0; i < n; i++) {
+        const el = document.createElement('div');
+        el.className = 'petal';
+        const sz = 5 + Math.random() * 8;
+        el.style.cssText = `
+      left:${8 + Math.random() * 84}vw;
+      top:-15px;
+      width:${sz}px; height:${sz * 1.6}px;
+      background:${PETAL_COLORS[Math.floor(Math.random() * PETAL_COLORS.length)]};
+      animation-duration:${1.6 + Math.random() * 2.5}s;
+      animation-delay:${Math.random() * 0.5}s;
+    `;
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 4500);
+      }
+    }
+
+    // ── Say yes ──
+    function sayYes() {
+      const yes = document.getElementById('btn-yes');
+      const rect = yes.getBoundingClientRect();
+
+      const ov = document.getElementById('yes-overlay');
+      ov.style.cssText = `
+    display:flex; align-items:center; justify-content:center;
+    left:${rect.left}px; top:${rect.top}px;
+    width:${rect.width}px; height:${rect.height}px;
+    border-radius:50px; font-size:1.1rem;
+    transition:none;
+  `;
+      ov.textContent = 'ใช่!! 💕';
+
+      spawnPetals(45);
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          ov.style.transition = 'left .65s, top .65s, width .65s, height .65s, border-radius .65s, font-size .65s';
+          ov.style.left = '0'; ov.style.top = '0';
+          ov.style.width = '100vw'; ov.style.height = '100dvh';
+          ov.style.borderRadius = '0'; ov.style.fontSize = '5rem';
+        });
+      });
+      startMusic();
+
+      setTimeout(() => { spawnPetals(55); }, 350);
+      setTimeout(() => {
+        ov.style.display = 'none';
+        showPage('page-success');
+      }, 900);
+    }
+
+    // ── Page navigation ──
+    function showPage(id) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+
+    // ── Inner pages ──
+    // 🎵 เปลี่ยนลิงค์เพลงได้เลย
+    const SONG_URL = 'https://youtu.be/uQiF1yOnzDg?list=RDuQiF1yOnzDg';
+
+    const GIFT_INNERS = { 1: 'inner-memory', 3: 'inner-gift3' };
+
+    function openGift(n) {
+      const box = document.getElementById('gift-' + n);
+      box.style.transform = 'scale(1.25) rotate(8deg)';
+      setTimeout(() => { box.style.transform = ''; }, 220);
+
+      if (n === 2) {
+        // open song link in new tab
+        setTimeout(() => window.open(SONG_URL, '_blank'), 200);
+        spawnPetals(20);
+        return;
+      }
+
+      setTimeout(() => {
+        document.getElementById(GIFT_INNERS[n]).classList.add('open');
+        spawnPetals(20);
+      }, 200);
+    }
+
+    function closeInner(id) {
+      document.getElementById(id).classList.remove('open');
+    }
+
+    // ── Restart ──
+    function restart() {
+      noCount = 0;
+      const yes = document.getElementById('btn-yes');
+      yes.style.fontSize = ''; yes.style.padding = '';
+      const btnNo = document.getElementById('btn-no');
+      btnNo.textContent = NO_TEXTS[0];
+      btnNo.style.display = '';
+      document.getElementById('cat-question').src = 'https://mayz.love/assets/do-you-luv-me/cat.gif';
+      document.querySelectorAll('.inner-page').forEach(p => p.classList.remove('open'));
+      showPage('page-main');
+    }
+  </script>
+</body>
+
+</html>
