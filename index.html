@@ -327,7 +327,9 @@
       transition: transform 0.2s;
     }
 
-    .polaroid:active { transform: scale(0.97) rotate(0deg) !important; }
+    .polaroid:active {
+      transform: scale(0.97) rotate(0deg) !important;
+    }
 
     .polaroid img {
       width: 100%;
@@ -348,8 +350,14 @@
     }
 
     @keyframes polaDrift {
-      0%   { opacity: 0; transform: translateY(24px) scale(0.94); }
-      100% { opacity: 1; }
+      0% {
+        opacity: 0;
+        transform: translateY(24px) scale(0.94);
+      }
+
+      100% {
+        opacity: 1;
+      }
     }
 
     .polaroid svg {
@@ -379,14 +387,24 @@
     /* typewriter cursor */
     .tw-cursor {
       display: inline-block;
-      width: 2px; height: 1em;
+      width: 2px;
+      height: 1em;
       background: #a78bfa;
       margin-left: 2px;
       vertical-align: text-bottom;
       animation: blink 0.7s step-end infinite;
     }
+
     @keyframes blink {
-      0%,100% { opacity: 1; } 50% { opacity: 0; }
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0;
+      }
     }
 
     #letter-body p {
@@ -470,21 +488,32 @@
 
     /* ── SPLASH SCREEN ── */
     #splash {
-      position: fixed; inset: 0; z-index: 1000;
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
       background: #ede8f5;
-      display: flex; align-items: center; justify-content: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       padding: 1.5rem;
       transition: opacity 0.7s ease;
     }
-    #splash.fade-out { opacity: 0; pointer-events: none; }
+
+    #splash.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
 
     .splash-card {
       background: white;
       border-radius: 28px;
       padding: 2rem 1.8rem 2.2rem;
-      max-width: 380px; width: 100%;
-      box-shadow: 0 8px 40px rgba(139,92,246,0.18);
-      display: flex; flex-direction: column; align-items: center;
+      max-width: 380px;
+      width: 100%;
+      box-shadow: 0 8px 40px rgba(139, 92, 246, 0.18);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       gap: 0;
     }
 
@@ -494,83 +523,147 @@
       margin-bottom: 1.1rem;
       animation: floatBob 2.5s ease-in-out infinite;
     }
+
     @keyframes floatBob {
-      0%,100% { transform: translateY(0); }
-      50%      { transform: translateY(-10px); }
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
     }
 
     .splash-title {
       font-size: clamp(1.15rem, 4.5vw, 1.45rem);
-      font-weight: 800; color: #5b21b6;
+      font-weight: 800;
+      color: #5b21b6;
       margin-bottom: 0.6rem;
       line-height: 1.35;
     }
 
     .splash-sub {
       font-size: clamp(0.78rem, 3vw, 0.88rem);
-      color: #9d7dce; font-weight: 400;
-      line-height: 1.65; margin-bottom: 1.4rem;
+      color: #9d7dce;
+      font-weight: 400;
+      line-height: 1.65;
+      margin-bottom: 1.4rem;
       text-align: center;
     }
 
     /* loading dots */
     .loading-dots {
-      display: flex; gap: 6px; margin-bottom: 1.4rem;
+      display: flex;
+      gap: 6px;
+      margin-bottom: 1.4rem;
     }
+
     .loading-dots span {
-      width: 8px; height: 8px; border-radius: 50%;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
       background: #c4b5fd;
       animation: dotPop 1.2s ease-in-out infinite;
     }
-    .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
-    .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+    .loading-dots span:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .loading-dots span:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
     @keyframes dotPop {
-      0%,100% { transform: scale(1); background: #c4b5fd; }
-      50%      { transform: scale(1.5); background: #a78bfa; }
+
+      0%,
+      100% {
+        transform: scale(1);
+        background: #c4b5fd;
+      }
+
+      50% {
+        transform: scale(1.5);
+        background: #a78bfa;
+      }
     }
 
     /* fingerprint button */
     #fp-btn {
       display: none;
-      flex-direction: column; align-items: center; gap: 0.5rem;
-      cursor: pointer; border: none; background: none;
-      animation: fadeUp 0.6s cubic-bezier(.34,1.56,.64,1) both;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      border: none;
+      background: none;
+      animation: fadeUp 0.6s cubic-bezier(.34, 1.56, .64, 1) both;
     }
-    #fp-btn.show { display: flex; }
+
+    #fp-btn.show {
+      display: flex;
+    }
 
     .fp-ring {
-      width: 64px; height: 64px;
+      width: 64px;
+      height: 64px;
       border-radius: 50%;
       background: linear-gradient(135deg, #ede8f5, #d4b4fe);
-      display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 4px 16px rgba(167,139,250,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 16px rgba(167, 139, 250, 0.4);
       transition: transform 0.15s, box-shadow 0.15s;
       font-size: 2rem;
       animation: fpPulse 2s ease-in-out infinite;
     }
+
     #fp-btn:active .fp-ring {
       transform: scale(0.9);
-      box-shadow: 0 2px 8px rgba(167,139,250,0.3);
+      box-shadow: 0 2px 8px rgba(167, 139, 250, 0.3);
     }
+
     @keyframes fpPulse {
-      0%,100% { box-shadow: 0 4px 16px rgba(167,139,250,0.4); }
-      50%      { box-shadow: 0 4px 28px rgba(167,139,250,0.8), 0 0 0 8px rgba(167,139,250,0.12); }
+
+      0%,
+      100% {
+        box-shadow: 0 4px 16px rgba(167, 139, 250, 0.4);
+      }
+
+      50% {
+        box-shadow: 0 4px 28px rgba(167, 139, 250, 0.8), 0 0 0 8px rgba(167, 139, 250, 0.12);
+      }
     }
 
     .fp-label {
-      font-size: 0.75rem; color: #9d7dce; font-weight: 600;
+      font-size: 0.75rem;
+      color: #9d7dce;
+      font-weight: 600;
     }
 
     /* hearts decoration */
     .splash-hearts {
       position: absolute;
-      pointer-events: none; font-size: 1rem;
+      pointer-events: none;
+      font-size: 1rem;
       animation: heartFloat 3s ease-in-out infinite;
       opacity: 0.7;
     }
+
     @keyframes heartFloat {
-      0%,100% { transform: translateY(0) rotate(-10deg); opacity:0.7; }
-      50%      { transform: translateY(-14px) rotate(10deg); opacity:1; }
+
+      0%,
+      100% {
+        transform: translateY(0) rotate(-10deg);
+        opacity: 0.7;
+      }
+
+      50% {
+        transform: translateY(-14px) rotate(10deg);
+        opacity: 1;
+      }
     }
   </style>
 </head>
@@ -581,17 +674,14 @@
   <div id="splash">
     <div class="splash-card" style="position:relative">
       <!-- หัวใจลอย -->
-      <span class="splash-hearts" style="top:12px;right:22px;animation-delay:0s">💜</span>
-      <span class="splash-hearts" style="top:30px;left:18px;animation-delay:0.8s;font-size:.8rem">🤍</span>
-      <span class="splash-hearts" style="bottom:60px;right:16px;animation-delay:1.4s;font-size:.75rem">💕</span>
+      <span class="splash-hearts" style="top:12px;right:22px;animation-delay:0s">🌸</span>
+      <span class="splash-hearts" style="top:30px;left:18px;animation-delay:0.8s;font-size:.8rem">✿</span>
+      <span class="splash-hearts" style="bottom:60px;right:16px;animation-delay:1.4s;font-size:.75rem">🫧</span>
 
       <!-- 🐱 เปลี่ยน GIF ตัวละครได้เลย — ใส่ Kuromi หรืออะไรก็ได้ -->
-      <img class="splash-gif"
-        src="default-ask.gif"
-        onerror="this.src='https://cataas.com/cat/gif'"
-        alt="character">
+      <img class="splash-gif" src="default-ask.gif" onerror="this.src='https://cataas.com/cat/gif'" alt="character">
 
-      <p class="splash-title">มีเรื่องสำคัญอยากถาม... 🥺</p>
+      <p class="splash-title">มีเรื่องสำคัญอยากถาม... 🌷</p>
       <p class="splash-sub" id="splash-sub-text">กำลังเตรียมอะไรบางอย่าง<br>เพื่อน้องอยู่เลยนะ...</p>
 
       <!-- loading dots (หายหลังโหลดเสร็จ) -->
@@ -619,60 +709,57 @@
     <div class="cat-frame">
       <img id="cat-question" src="cat.gif" alt="🐱">
     </div>
-    <p class="q-text">เป็นแฟนกับพี่มั้ย? 🥺</p>
+    <p class="q-text">เป็นแฟนกับพี่ได้มั้ยย? 🥺</p>
     <div class="btn-row">
-      <button id="btn-yes" onclick="sayYes()">ใช่!! 💕</button>
+      <button id="btn-yes" onclick="sayYes()">ได้!! 💕</button>
       <button id="btn-no" onclick="pressNo()">ไม่... 😢</button>
     </div>
   </div>
 
   <!-- ═══ PAGE: SUCCESS ═══ -->
   <div class="page" id="page-success">
-    <p class="big-title">พี่รู้อยู่แล้ว!! 💕💕💕</p>
+    <p class="big-title">พี่รู้อยู่แล้ว!! 🎊🌸🎊</p>
     <div class="cat-frame">
       <img src="cat-shy.png" alt="🐱" onerror="this.onerror=null;this.src='https://placekitten.com/270/200'">
     </div>
     <div class="gifts-row">
       <div class="gift-box" id="gift-1" onclick="openGift(1)">
-        <span class="gift-icon">🎁</span>
+        <span class="gift-icon">📸</span>
         <span class="gift-label">ความทรงจำ</span>
       </div>
       <div class="gift-box" id="gift-2" onclick="openGift(2)">
-        <span class="gift-icon">🎁</span>
+        <span class="gift-icon">🎵</span>
         <span class="gift-label">เพลงของเรา</span>
       </div>
       <div class="gift-box" id="gift-3" onclick="openGift(3)">
-        <span class="gift-icon">🎁</span>
+        <span class="gift-icon">💌</span>
         <span class="gift-label">จดหมาย</span>
       </div>
     </div>
-    <p class="gift-hint">แตะของขวัญเพื่อเปิด ✨</p>
+    <p class="gift-hint">แตะของขวัญเพื่อเปิด 🎀</p>
     <button class="btn-restart" onclick="restart()">เริ่มใหม่ ▾</button>
   </div>
 
   <!-- ═══ INNER: MEMORIES ═══ -->
   <div class="inner-page" id="inner-memory">
-    <p class="inner-title">💜 ความทรงจำของเรา</p>
+    <p class="inner-title">🎞️ ความทรงจำของเรา</p>
     <div class="polaroids">
 
       <!-- ✏️ รูปที่ 1 (กว้างเต็ม) — เปลี่ยน src และ caption ได้เลย -->
       <div class="polaroid">
-        <img src="1.jpg" alt="ความทรงจำ 1"
-          onerror="this.style.background='#e0d4f7';this.removeAttribute('src')">
-        <p class="pcap">✨ น่ารักเนอะ</p>
+        <img src="2.jpg" alt="ความทรงจำ 1" onerror="this.style.background='#e0d4f7';this.removeAttribute('src')">
+        <p class="pcap">✨ กว่าจะได้สักรูป</p>
       </div>
 
       <!-- ✏️ รูปที่ 2 -->
       <div class="polaroid">
-        <img src="2.jpg" alt="ความทรงจำ 2"
-          onerror="this.style.background='#e0d4f7';this.removeAttribute('src')">
-        <p class="pcap">💜 กว่าจะได้สักรูป</p>
+        <img src="4.jpg" alt="ความทรงจำ 2" onerror="this.style.background='#e0d4f7';this.removeAttribute('src')">
+        <p class="pcap">💜 น่ารักเนอะ</p>
       </div>
 
       <!-- ✏️ รูปที่ 3 -->
       <div class="polaroid">
-        <img src="3.jpg" alt="ความทรงจำ 3"
-          onerror="this.style.background='#e0d4f7';this.removeAttribute('src')">
+        <img src="3.jpg" alt="ความทรงจำ 3" onerror="this.style.background='#e0d4f7';this.removeAttribute('src')">
         <p class="pcap">555555</p>
       </div>
 
@@ -713,12 +800,12 @@
   <script>
     // ── No button stages ──
     const NO_TEXTS = [
-      'ไม่... 😢',
-      'เดี๋ยวก่อน... แน่ใจมั้ย? 🥺',
-      'เอาดีๆๆๆ... 🥺',
-      'ม่ายยยย... 🥺',
-      'คิดดูก่อนได้มั้ย 🥺',
-      'น้องใจร้ายมากเลย 🫠',
+      'ไม่... 😶',
+      'เดี๋ยวก่อน... แน่ใจมั้ย? 🫣',
+      'เอาดีๆๆๆ... 😩',
+      'ม่ายยยย... 😭',
+      'คิดดูก่อนได้มั้ย 🙏',
+      'น้องใจร้ายมากเลย 😤',
       'พี่รู้ว่าน้องรักพี่นิดนึง...',
     ];
 
@@ -812,8 +899,8 @@
     // ── Splash ──
     const SPLASH_MESSAGES = [
       'กำลังเตรียมอะไรบางอย่าง<br>เพื่อน้องอยู่เลยนะ...',
-      'รอแป๊บนึงนะ กำลัง<br>จัดเรียงความรู้สึกอยู่ 🥺',
-      'เกือบพร้อมแล้ว...<br>อย่าเพิ่งไปไหนนะ 💜',
+      'รอแป๊บนึงนะ กำลัง<br>จัดเรียงความรู้สึกอยู่ 🫶',
+      'เกือบพร้อมแล้ว...<br>อย่าเพิ่งไปไหนนะ 🌷',
     ];
     let splashMsgIdx = 0;
 
@@ -827,7 +914,7 @@
           clearInterval(interval);
           // show fingerprint
           document.getElementById('splash-dots').style.display = 'none';
-          document.getElementById('splash-sub-text').innerHTML = 'ถ้าพร้อมแล้ว แตะตรงนี้ได้เลยนะ 💜';
+          document.getElementById('splash-sub-text').innerHTML = 'ถ้าพร้อมแล้ว แตะตรงนี้ได้เลยนะ 🫰';
           document.getElementById('fp-btn').classList.add('show');
         }
       }, 1600);
