@@ -917,7 +917,7 @@
           document.getElementById('splash-sub-text').innerHTML = 'ถ้าพร้อมแล้ว แตะตรงนี้ได้เลยนะ 🫰';
           document.getElementById('fp-btn').classList.add('show');
         }
-      }, 1600);
+      }, 2600);
     })();
 
     function enterMain() {
@@ -1055,13 +1055,13 @@
           charIdx++;
           // scroll letter card down smoothly
           body.closest('.letter-card').scrollTop = 9999;
-          setTimeout(nextChar, line[charIdx - 1] === ' ' ? 55 : 38);
+          setTimeout(nextChar, line[charIdx - 1] === ' ' ? 80 : 58);
         } else {
           // line done
           lineIdx++; charIdx = 0;
           if (lineIdx < LETTER_LINES.length) {
             cursor.remove();
-            setTimeout(nextChar, 320);
+            setTimeout(nextChar, 500);
           } else {
             cursor.remove();
           }
