@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "WebFetch(domain:mayz.love)"
+      "WebFetch(domain:mayz.love)",
+      "Bash(ls -la *.jpg *.mp4 *.png)",
+      "Bash(dir /b *.jpg *.mp4 *.png)"
     ]
   }
 }

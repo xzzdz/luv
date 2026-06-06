@@ -291,80 +291,93 @@
       margin-bottom: 1.2rem;
     }
 
-    /* polaroids — grid 2 columns */
-    .polaroids {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: clamp(0.7rem, 3vw, 1.1rem);
+    /* ── MEMORIES redesign ── */
+
+    /* video story frame */
+    .mem-video-wrap {
+      position: relative;
+      width: min(170px, 46vw);
+      flex-shrink: 0;
+      margin-bottom: 1.4rem;
+    }
+    .mem-video-wrap::before {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, #c4b5fd, #f9a8d4, #a78bfa);
+      z-index: 0;
+      animation: borderSpin 4s linear infinite;
+    }
+    @keyframes borderSpin {
+      0%   { filter: hue-rotate(0deg); }
+      100% { filter: hue-rotate(360deg); }
+    }
+    .mem-video-wrap video {
+      position: relative; z-index: 1;
       width: 100%;
-      max-width: 400px;
-      margin-bottom: 1.2rem;
-    }
-
-    /* รูปที่ 1 กว้างเต็ม row */
-    .polaroid:nth-child(1) {
-      grid-column: 1 / -1;
-      transform: rotate(-1.5deg);
-      animation-delay: 0s;
-    }
-
-    .polaroid:nth-child(2) {
-      transform: rotate(-2deg);
-      animation-delay: 0.12s;
-    }
-
-    .polaroid:nth-child(3) {
-      transform: rotate(2deg);
-      animation-delay: 0.24s;
-    }
-
-    .polaroid {
-      background: white;
-      border-radius: 8px;
-      padding: 8px 8px 28px;
-      box-shadow: 0 4px 18px rgba(91, 33, 182, 0.12);
-      animation: polaDrift 0.5s cubic-bezier(.34, 1.56, .64, 1) both;
-      transition: transform 0.2s;
-    }
-
-    .polaroid:active {
-      transform: scale(0.97) rotate(0deg) !important;
-    }
-
-    .polaroid img {
-      width: 100%;
-      aspect-ratio: 1;
+      aspect-ratio: 9/16;
       object-fit: cover;
+      border-radius: 18px;
       display: block;
-      border-radius: 5px;
-      background: #e0d4f7;
+      background: #d5c8ed;
     }
-
-    /* caption ใต้ polaroid */
-    .polaroid .pcap {
-      font-size: 0.68rem;
+    .mem-video-label {
+      font-size: 0.7rem;
       color: #9d7dce;
-      margin-top: 4px;
+      margin-top: 0.5rem;
       font-weight: 600;
       text-align: center;
     }
 
-    @keyframes polaDrift {
-      0% {
-        opacity: 0;
-        transform: translateY(24px) scale(0.94);
-      }
-
-      100% {
-        opacity: 1;
-      }
+    /* photo wall */
+    .mem-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+      width: 100%;
+      max-width: 380px;
+      margin-bottom: 1.2rem;
     }
 
-    .polaroid svg {
+    /* photo 1 spans 2 cols, photo 4 spans 2 cols */
+    .mem-photo:nth-child(1) { grid-column: span 2; }
+    .mem-photo:nth-child(4) { grid-column: span 2; }
+
+    .mem-photo {
+      background: white;
+      border-radius: 10px;
+      padding: 5px 5px 20px;
+      box-shadow: 0 3px 14px rgba(91, 33, 182, 0.12);
+      transform: rotate(var(--r, 0deg));
+      animation: polaDrift 0.45s cubic-bezier(.34,1.56,.64,1) both;
+      animation-delay: var(--d, 0s);
+      transition: transform 0.2s;
+    }
+    .mem-photo:active { transform: scale(0.96) rotate(0deg) !important; }
+
+    .mem-photo img {
       width: 100%;
       aspect-ratio: 1;
+      object-fit: cover;
+      border-radius: 6px;
       display: block;
-      border-radius: 3px;
+      background: #e0d4f7;
+    }
+    .mem-photo .pcap {
+      font-size: 0.6rem;
+      color: #9d7dce;
+      margin-top: 3px;
+      font-weight: 600;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    @keyframes polaDrift {
+      0%   { opacity: 0; transform: translateY(20px) scale(0.92) rotate(var(--r,0deg)); }
+      100% { opacity: 1; }
     }
 
     /* letter */
@@ -729,7 +742,7 @@
       </div>
       <div class="gift-box" id="gift-2" onclick="openGift(2)">
         <span class="gift-icon">🎵</span>
-        <span class="gift-label">เพลงของเรา</span>
+        <span class="gift-label">เพลงที่อยากให้น้อง</span>
       </div>
       <div class="gift-box" id="gift-3" onclick="openGift(3)">
         <span class="gift-icon">💌</span>
@@ -743,28 +756,48 @@
   <!-- ═══ INNER: MEMORIES ═══ -->
   <div class="inner-page" id="inner-memory">
     <p class="inner-title">🎞️ ความทรงจำของเรา</p>
-    <div class="polaroids">
 
-      <!-- ✏️ รูปที่ 1 (กว้างเต็ม) — เปลี่ยน src และ caption ได้เลย -->
-      <div class="polaroid">
-        <img src="2.jpg" alt="ความทรงจำ 1" onerror="this.style.background='#e0d4f7';this.removeAttribute('src')">
-        <p class="pcap">✨ กว่าจะได้สักรูป</p>
-      </div>
-
-      <!-- ✏️ รูปที่ 2 -->
-      <div class="polaroid">
-        <img src="4.jpg" alt="ความทรงจำ 2" onerror="this.style.background='#e0d4f7';this.removeAttribute('src')">
-        <p class="pcap">💜 น่ารักเนอะ</p>
-      </div>
-
-      <!-- ✏️ รูปที่ 3 -->
-      <div class="polaroid">
-        <img src="3.jpg" alt="ความทรงจำ 3" onerror="this.style.background='#e0d4f7';this.removeAttribute('src')">
-        <p class="pcap">555555</p>
-      </div>
-
+    <!-- คลิปแนวตั้ง -->
+    <div class="mem-video-wrap">
+      <video src="v1.mp4" autoplay muted loop playsinline></video>
     </div>
-    <button class="btn-back" style="flex-shrink:0" onclick="closeInner('inner-memory')">← กลับ</button>
+    <p class="mem-video-label">🎬 คลิปน่ารักของเรา</p>
+
+    <!-- photo wall 6 รูป grid 3 คอลัมน์ -->
+    <div class="mem-grid" style="margin-top:1rem">
+      <!-- รูป 1 span 2 cols -->
+      <div class="mem-photo" style="--r:-2deg;--d:0s">
+        <img src="2.jpg" onerror="this.style.background='#e0d4f7';this.removeAttribute('src')">
+        <p class="pcap">🌸 รูปแรก</p>
+      </div>
+      <!-- รูป 2 -->
+      <div class="mem-photo" style="--r:3deg;--d:.08s">
+        <img src="3.jpg" onerror="this.style.background='#e0d4f7';this.removeAttribute('src')">
+        <p class="pcap">✨</p>
+      </div>
+      <!-- รูป 3 -->
+      <div class="mem-photo" style="--r:-1.5deg;--d:.16s">
+        <img src="4.jpg" onerror="this.style.background='#e0d4f7';this.removeAttribute('src')">
+        <p class="pcap">🫶</p>
+      </div>
+      <!-- รูป 4 span 2 cols -->
+      <div class="mem-photo" style="--r:2deg;--d:.24s">
+        <img src="5.jpg" onerror="this.style.background='#e0d4f7';this.removeAttribute('src')">
+        <p class="pcap">🌷 น่ารักเนอะ</p>
+      </div>
+      <!-- รูป 5 -->
+      <div class="mem-photo" style="--r:-3deg;--d:.32s">
+        <img src="6.jpg" onerror="this.style.background='#e0d4f7';this.removeAttribute('src')">
+        <p class="pcap">💜</p>
+      </div>
+      <!-- รูป 6 -->
+      <div class="mem-photo" style="--r:1.5deg;--d:.4s">
+        <img src="7.jpg" onerror="this.style.background='#e0d4f7';this.removeAttribute('src')">
+        <p class="pcap">🥹</p>
+      </div>
+    </div>
+
+    <button class="btn-back" style="flex-shrink:0;margin-top:.5rem" onclick="closeInner('inner-memory')">← กลับ</button>
   </div>
 
   <!-- ═══ INNER: LETTER ═══ -->
@@ -969,7 +1002,7 @@
 
     // ── Inner pages ──
     // 🎵 เปลี่ยนลิงค์เพลงได้เลย
-    const SONG_URL = 'https://youtu.be/uQiF1yOnzDg?list=RDuQiF1yOnzDg';
+    const SONG_URL = 'https://youtu.be/1OMZrYHIim8?si=_rRqsWMqv9RJMP-l&t=66';
 
     const GIFT_INNERS = { 1: 'inner-memory', 3: 'inner-gift3' };
 
